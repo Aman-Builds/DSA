@@ -1,103 +1,36 @@
-
-import java.util.*;
-
 class Solution {
-
-    // Validate a 3x3 box
-
-    // this function whether a particular box is valid by traversing 
-    public boolean valid(char[][] board, int sr, int er, int sc, int ec) {
-
-        Set<Character> st1 = new HashSet<>();
-
-        // We use HashSet because it stores only unique characters.
-        // If a number already exists, it means we have a duplicate.
-
-
-          // trab
-        for (int i = sr; i <= er; i++) {
-
-            for (int j = sc; j <= ec; j++) {
-
-                if (board[i][j] == '.') {
-                    continue;
-                }
-
-                if (st1.contains(board[i][j])) {
-                    return false;
-                }
-                 // Add the current number to Set
-                // So that we can detect it if it appears again
-                st1.add(board[i][j]);
-            }
-        }
-
-        return true;
-    }
-
     public boolean isValidSudoku(char[][] board) {
+        Set<String>st = new HashSet<>() ;
+        for(int i = 0 ; i < 9 ; i++)
+        {
+            for(int j = 0 ; j <9 ; j++)
+            {
+                if(board[i][j] == '.')
+                continue ;
+            
+            char num = board[i][j] ;
 
-        // Validate rows
-        for (int row = 0; row < 9; row++) {
+            String row = num + "_row_" + i ;
+            String column = num + "_col_" + j ;
+            String box = num + "_box_" + (i/3) + "_" + (j/3) ;
 
-            Set<Character> st = new HashSet<>();
+            // If any key already exists, we have a duplicate
+                if (st.contains(row) ||
+                    st.contains(column) ||
+                    st.contains(box)) {
 
-            for (int col = 0; col < 9; col++) {
-
-                if (board[row][col] == '.') {
-                    continue;
-                }
-
-                if (st.contains(board[row][col])) {
                     return false;
                 }
 
-                st.add(board[row][col]);
+                // Store all three keys in the HashSet
+                st.add(row);
+                st.add(column);
+                st.add(box);
+
             }
+
         }
-
-        // Validate columns
-        for (int col = 0; col < 9; col++) {
-
-            Set<Character> st = new HashSet<>();
-
-            for (int row = 0; row < 9; row++) {
-
-                if (board[row][col] == '.') {
-                    continue;
-                }
-
-                if (st.contains(board[row][col])) {
-                    return false;
-                }
-
-                st.add(board[row][col]);
-            }
-        }
-
-        // Validate 3x3 boxes
-
-        // sr represents starting row of each 3x3 box
-        // We increment by 3 because every box has 3 rows
-        for (int sr = 0; sr < 9; sr += 3) {
-
-            int er = sr + 2;
-
-
-            // sc represents starting column of each 3x3 box
-            // We increment by 3 because every box has 3 columns
-            for (int sc = 0; sc < 9; sc += 3) {
-
-                int ec = sc + 2;
-
-                // Call our valid() function to check this 3x3 box
-                // If even one box is invalid, the entire Sudoku is invalid
-                if (!valid(board, sr, er, sc, ec)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+         return true ;
     }
+
 }
